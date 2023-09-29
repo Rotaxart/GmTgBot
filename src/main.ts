@@ -9,6 +9,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useLogger(app.get(LoggerService));
   app.useGlobalInterceptors(new LoggingInterceptor(app.get(LoggerService)));
-  await app.listen(3000);
+  await app.listen(3000, () => console.log(`Server started on port 3000`));
 }
 bootstrap();
