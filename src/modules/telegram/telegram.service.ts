@@ -46,7 +46,7 @@ export class TelegramService {
     return message ?? null;
   }
 
-  @Cron('20 12 * * *')
+  @Cron('35 9 * * *')
   async goodDayCron() {
     console.log('cron');
     const text = await this.openaiService.createReqest(goodDayPrompt());
