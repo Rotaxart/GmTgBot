@@ -5,7 +5,7 @@ import { TelegrafContext } from './context/telegraf-context.interface';
 import { MessageService } from '../message/services/message.service';
 import { Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { goodDayPrompt } from '../openai/promts/good-day.prompt';
 import { OpenaiService } from '../openai/openai.service';
 
@@ -16,7 +16,7 @@ export class TelegramService {
     @Inject(MessageService) private readonly messageService: MessageService,
     @Inject(OpenaiService) private readonly openaiService: OpenaiService,
     @InjectBot() private readonly bot: Telegraf<TelegrafContext>,
-  ) {}
+  ) { }
 
   async getUserList() {
     const users = await this.userService.findAll();
@@ -46,8 +46,9 @@ export class TelegramService {
     return message ?? null;
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_9AM)
+  @Cron('0 12 * * *')
   async goodDayCron() {
+    console.log('cron');
     const text = await this.openaiService.createReqest(goodDayPrompt());
     this.bot.telegram.sendMessage(process.env.TELEGRAM_ID_MARINA, text);
   }
